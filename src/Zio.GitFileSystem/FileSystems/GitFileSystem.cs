@@ -44,6 +44,10 @@ namespace Zio.FileSystems
 
         private Branch Branch { get; }
 
+        // ----------------------------------------------
+        // Constructor as SubFileSystem
+        // ----------------------------------------------
+
         protected GitFileSystem(IFileSystem fileSystem, UPath subPath, bool owned) : base(fileSystem, owned)
         {
             SubPath = subPath.AssertAbsolute(nameof(subPath));
@@ -63,21 +67,6 @@ namespace Zio.FileSystems
             Repository = new Repository(ioPath);
         }
 
-        public GitFileSystem(IFileSystem fileSystem, UPath subPath, Commit commit, bool owned = true) : this(fileSystem, subPath, owned)
-        {
-            Commit = commit;
-        }
-
-        public GitFileSystem(IFileSystem fileSystem, UPath subPath, Branch branch, bool owned = true) : this(fileSystem, subPath, owned)
-        {
-            if (branch.IsRemote)
-            {
-                throw new Exception("Branch must be locale");
-            }
-
-            Branch = branch;
-        }
-
         public GitFileSystem(IFileSystem fileSystem, UPath subPath, string committishOrBranchSpec, bool owned = true) : this(fileSystem, subPath, owned)
         {
             Reference reference;
@@ -91,6 +80,67 @@ namespace Zio.FileSystems
             else
             {
                 Commit = obj.Peel<Commit>();
+            }
+        }
+
+        // ----------------------------------------------
+        // Constructor from Repository
+        // ----------------------------------------------
+
+        protected GitFileSystem(Repository repository) : base(new PhysicalFileSystem(), true)
+        {
+            Repository = repository;
+
+            var subPath = NextFileSystemSafe.ConvertPathFromInternal(Repository.Info.WorkingDirectory);
+
+            SubPath = subPath.AssertAbsolute(nameof(subPath));
+
+            if (!NextFileSystemSafe.DirectoryExists(SubPath))
+            {
+                throw new DirectoryNotFoundException($"Could not find a part of the path `{SubPath}`.");
+            }
+        }
+
+        public GitFileSystem(Repository repository, string committishOrBranchSpec) : this(repository)
+        {
+            Reference reference;
+            GitObject obj;
+
+            Repository.RevParse(committishOrBranchSpec, out reference, out obj);
+            if (reference != null && reference.IsLocalBranch)
+            {
+                Branch = Repository.Branches[reference.CanonicalName];
+            }
+            else
+            {
+                Commit = obj.Peel<Commit>();
+            }
+        }
+
+        public GitFileSystem(Repository repository, Commit commit) : this(repository)
+        {
+            Commit = commit;
+        }
+
+        public GitFileSystem(Repository repository, Branch branch) : this(repository)
+        {
+            if (branch.IsRemote)
+            {
+                throw new Exception("Branch must be locale");
+            }
+
+            Branch = branch;
+        }
+
+        // ----------------------------------------------
+        // Disposing
+        // ----------------------------------------------
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                Repository?.Dispose();
             }
         }
 
