@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Zio</RootNamespace>
+    <Authors>Daniel Lang</Authors>
+    <Company>Daniel Lang</Company>
+    <Copyright>Daniel Lang</Copyright>
+    <PackageLicenseUrl>https://github.com/xoofx/zio/blob/master/license.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/xoofx/zio</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/xoofx/zio/master/img/zio.png</PackageIconUrl>
+    <PackageReleaseNotes>https://github.com/xoofx/zio/blob/master/changelog.md</PackageReleaseNotes>
+    <PackageTags>filesystem;vfs;VirtualFileSystem;virtual;abstract;directory;files;io;mock;git;gvfs;</PackageTags>
+    <NeutralLanguage>en</NeutralLanguage>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <FileVersion>0.1.0.0</FileVersion>
+    <Version>0.1.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LibGit2Sharp" Version="0.25.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Zio\Zio.csproj" />
+  </ItemGroup>
+
+</Project>
