@@ -19,9 +19,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{DE54AD2A-E02
 		..\doc\readme.md = ..\doc\readme.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zio.GitFileSystem", "Zio.GitFileSystem\Zio.GitFileSystem.csproj", "{08DD9BE9-B537-4783-B891-33DABF98F382}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zio.GitFileSystem", "Zio.GitFileSystem\Zio.GitFileSystem.csproj", "{08DD9BE9-B537-4783-B891-33DABF98F382}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zio.GitFileSystem.Tests", "Zio.GitFileSystem.Test\Zio.GitFileSystem.Tests.csproj", "{BEE80320-26CD-4702-8509-400F52D71B12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zio.GitFileSystem.Tests", "Zio.GitFileSystem.Test\Zio.GitFileSystem.Tests.csproj", "{BEE80320-26CD-4702-8509-400F52D71B12}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{6FFBE788-7E46-4D4F-81AF-F41176620BE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{BEE80320-26CD-4702-8509-400F52D71B12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEE80320-26CD-4702-8509-400F52D71B12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEE80320-26CD-4702-8509-400F52D71B12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FFBE788-7E46-4D4F-81AF-F41176620BE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FFBE788-7E46-4D4F-81AF-F41176620BE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FFBE788-7E46-4D4F-81AF-F41176620BE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FFBE788-7E46-4D4F-81AF-F41176620BE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

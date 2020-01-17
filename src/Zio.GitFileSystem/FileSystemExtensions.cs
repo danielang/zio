@@ -16,7 +16,7 @@ namespace Zio
         /// <param name="committishOrBranchSpec"></param>
         /// <param name="owned"></param>
         /// <returns>A git-filesystem</returns>
-        public static GitFileSystem GetOrCreateGitFileSystem(this IFileSystem fs, UPath subFolder, string committishOrBranchSpec, bool owned = true)
+        public static GitFileSystem GetOrCreateGitFileSystem(this PhysicalFileSystem fs, UPath subFolder, string committishOrBranchSpec, bool owned = true)
         {
             if (!fs.DirectoryExists(subFolder))
             {

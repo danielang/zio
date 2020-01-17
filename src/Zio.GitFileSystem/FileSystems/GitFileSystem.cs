@@ -67,7 +67,7 @@ namespace Zio.FileSystems
             Repository = new Repository(ioPath);
         }
 
-        public GitFileSystem(IFileSystem fileSystem, UPath subPath, string committishOrBranchSpec, bool owned = true) : this(fileSystem, subPath, owned)
+        internal GitFileSystem(IFileSystem fileSystem, UPath subPath, string committishOrBranchSpec, bool owned = true) : this(fileSystem, subPath, owned)
         {
             Reference reference;
             GitObject obj;
@@ -151,6 +151,11 @@ namespace Zio.FileSystems
         /// <inheritdoc />
         protected override bool DirectoryExistsImpl(UPath path)
         {
+            if (path == "/")
+            {
+                return true;
+            }
+
             var treeEntry = GetTreeEntryFromPath(path);
 
             return treeEntry != null && treeEntry.TargetType == TreeEntryTargetType.Tree;
@@ -220,37 +225,55 @@ namespace Zio.FileSystems
         /// <inheritdoc />
         protected override FileAttributes GetAttributesImpl(UPath path)
         {
-            // TODO
-            throw new NotSupportedException();
+            var treeEntry = GetTreeEntryFromPath(path);
+
+            if (treeEntry == null && path == "/")
+            {
+                // the root of a git repository is a directory
+                return FileAttributes.Directory | FileAttributes.ReadOnly;
+            }
+            else
+            {
+                switch (treeEntry.TargetType)
+                {
+                    case TreeEntryTargetType.Blob:
+                        return FileAttributes.Normal | FileAttributes.ReadOnly;
+
+                    case TreeEntryTargetType.Tree:
+                        return FileAttributes.Directory | FileAttributes.ReadOnly;
+                }
+            }
+
+            return FileAttributes.ReadOnly;
         }
 
         /// <inheritdoc />
         protected override DateTime GetCreationTimeImpl(UPath path)
         {
             // TODO
-            throw new NotSupportedException();
+            return Commit.Author.When.UtcDateTime;
         }
 
         /// <inheritdoc />
         protected override DateTime GetLastAccessTimeImpl(UPath path)
         {
             // TODO
-            throw new NotSupportedException();
+            return Commit.Author.When.UtcDateTime;
         }
 
         /// <inheritdoc />
         protected override DateTime GetLastWriteTimeImpl(UPath path)
         {
             // TODO
-            throw new NotSupportedException();
+            return Commit.Author.When.UtcDateTime;
 
-            var treeEntry = GetTreeEntryFromPath(path);
+            //var treeEntry = GetTreeEntryFromPath(path);
 
-            var commit = Repository.Lookup<Commit>(treeEntry.Target.Id);
+            //var commit = Repository.Lookup<Commit>(treeEntry.Target.Id);
 
-            // return new DateTime(commit.Author.When);
+            //// return new DateTime(commit.Author.When);
 
-            return NextFileSystemSafe.GetLastWriteTime(ConvertPathToDelegate(path));
+            //return NextFileSystemSafe.GetLastWriteTime(ConvertPathToDelegate(path));
         }
 
         // ----------------------------------------------
